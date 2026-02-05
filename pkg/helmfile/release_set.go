@@ -5,6 +5,9 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/mumoshu/terraform-provider-eksctl/pkg/sdk"
+	"golang.org/x/xerrors"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -12,10 +15,6 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/mumoshu/terraform-provider-eksctl/pkg/sdk"
-	"golang.org/x/xerrors"
 
 	"github.com/Masterminds/semver"
 )
