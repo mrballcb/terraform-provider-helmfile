@@ -294,3 +294,51 @@ Affected releases are:
 Identified at least one change
 `, "${RELEASE_NAME}", releaseName)
 }
+
+func TestNormalizeTemporaryPaths(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    string
+		expected string
+	}{
+		{
+			name:     "normalize terraform helmfile temp directory",
+			input:    "path: /Users/user/project/.terraform/helmfile/temp-abc123/chart.yaml",
+			expected: "path: <temp-dir>/chart.yaml",
+		},
+		{
+			name:     "normalize helmfile temp yaml",
+			input:    "using helmfile-abc123def456.yaml for configuration",
+			expected: "using <helmfile-temp>.yaml for configuration",
+		},
+		{
+			name:     "normalize temp values yaml",
+			input:    "loading values from temp.values-abc123.yaml",
+			expected: "loading values from <values-temp>.yaml",
+		},
+		{
+			name:     "normalize tmp directory paths",
+			input:    "temporary file: /tmp/helm-template-workdir-123456/values.yaml",
+			expected: "temporary file: <tmp-dir>",
+		},
+		{
+			name:     "normalize multiple patterns",
+			input:    "helmfile-abc123.yaml in /Users/user/.terraform/helmfile/temp-def456/ with temp.values-1a2b3c.yaml",
+			expected: "<helmfile-temp>.yaml in <temp-dir>/ with <values-temp>.yaml",
+		},
+		{
+			name:     "no normalization needed",
+			input:    "regular output without temp paths",
+			expected: "regular output without temp paths",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := normalizeTemporaryPaths(tt.input)
+			if result != tt.expected {
+				t.Errorf("normalizeTemporaryPaths() = %v, want %v", result, tt.expected)
+			}
+		})
+	}
+}
