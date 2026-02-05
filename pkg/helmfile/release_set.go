@@ -612,16 +612,16 @@ func readDiffFile(ctx *sdk.Context, fs *ReleaseSet) (string, error) {
 // `terraform apply` seem to run diff twice, and if this function emitted a result different than the first run results in
 // errors like:
 //
-//	When expanding the plan for helmfile_release_set.mystack to include new values
-//	learned so far during apply, provider "registry.terraform.io/-/helmfile"
-//	produced an invalid new value for .diff_output: was cty.StringVal("Adding repo
-//	...
-//	a lot of text
-//	...
-//	but now cty.StringVal("Adding repo stable
-//	...
-//	a lot of text
-//	...
+//   When expanding the plan for helmfile_release_set.mystack to include new values
+//   learned so far during apply, provider "registry.terraform.io/-/helmfile"
+//   produced an invalid new value for .diff_output: was cty.StringVal("Adding repo
+//   ...
+//   a lot of text
+//   ...
+//   but now cty.StringVal("Adding repo stable
+//   ...
+//   a lot of text
+//   ...
 func DiffReleaseSet(ctx *sdk.Context, fs *ReleaseSet, d ResourceReadWrite, opts ...DiffOption) (string, error) {
 	logf("[DEBUG] Detecting changes on release set resource...")
 
